@@ -83,3 +83,8 @@ Verify that the producer can still send message to the topic and the consumer ca
 ```bash
 docker-compose down
 ```
+
+## References
+
+- https://hub.docker.com/_/zookeeper
+- https://github.com/wurstmeister/kafka-docker/wiki/Connectivity
