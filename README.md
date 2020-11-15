@@ -54,29 +54,31 @@ docker-compose down
 
 1. Repeat step 1 - 6 in **Demo1** to spin up the Docker containers
 
-2. List all topics, find the master node of topic `new_topic`
+2. List all topics, find the master node of topic `new_topic`. Note down the broker ID of `new_topic`'s leader.
 
 ```bash
 docker run --tty --network kafka-cluster_default confluentinc/cp-kafkacat kafkacat -b kafka1:9092 -L
 ```
 
-3. Run the following command to kill the master node
+3. Run the following command to kill the master node. E.g. If the broker ID of the leader of `new_topic` in step 2 is `1`, the master node container name is `kafka1`.
 
 ```bash
-docker kill [master Kafka node container]
+docker kill [master node container name]
 ```
 
-4. Run the following command to verify that a new leader has been elected
+4. Run the following command to list the metadata of all the topics by connecting to one of the alive Kafka node (Note: do not connect to the previous master node, replace `kafka1` with other brokers if `kafka1` was the killed master node)
 
 ```bash
 docker run --tty --network kafka-cluster_default confluentinc/cp-kafkacat kafkacat -b kafka1:9092 -L
 ```
 
-5. Repeat step 7 - 8 in **Demo1** to start a producer and a consumer (Note: do not connect to the previous master node)
+Verify that a new leader has been elected
 
-6. Verify that the producer can still send message to the topic and the consumer can consume the sent messages as before, i.e. the messaging functionality still works as before.
+5. Repeat step 7 - 8 in **Demo1** to start a producer and a consumer (Note: connect to alive nodes only)
 
-7. Run the following command to stop the Docker containers
+Verify that the producer can still send message to the topic and the consumer can consume the sent messages as before, i.e. the messaging functionality still works as before.
+
+6. Run the following command to stop the Docker containers
 
 ```bash
 docker-compose down
